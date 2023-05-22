@@ -1,11 +1,8 @@
-//Mettre le code JavaScript lié à la page photographer.html
+import { InsertMedia } from "../factories/insertMedia.js";
+import { Lightbox } from "../factories/lightbox.js";
 
-import { getOnePhotographer } from "../factories/insertMedia.js";
-
-class displayOnePhotographer {
-  onePhotagrapher() {
-    new getOnePhotographer().getOnePhotographers();
-  }
-}
-
-new displayOnePhotographer().onePhotagrapher();
+document.addEventListener("DOMContentLoaded", async () => {
+  const insertMediaInstance = new InsertMedia();
+  await insertMediaInstance.getOnePhotographers();
+  Lightbox.init();
+});

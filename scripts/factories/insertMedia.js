@@ -1,16 +1,15 @@
 let spantotalLikes = document.querySelector("#totalLikes");
 let spanPrice = document.querySelector("#price");
 
-export class getOnePhotographer {
+export class InsertMedia {
   constructor() {
     this.total = 0;
   }
   async getOnePhotographers() {
     const url = new URLSearchParams(document.location.search);
     const id = parseInt(url.get("id"));
-    const data = await fetch("../data/photographers.json").then((res) => {
-      return res.json();
-    });
+    const response = await fetch("../data/photographers.json");
+    const data = await response.json();
     const photographer = data.photographers.find(
       (onePhotographer) => onePhotographer.id === id
     );
@@ -21,11 +20,12 @@ export class getOnePhotographer {
       (dataMediaPhotographer) => dataMediaPhotographer.photographerId === id
     );
 
-    allMedia.map((element) => {
+    for (const element of allMedia) {
       spantotalLikes.innerHTML = `${(this.total +=
         element.likes)} <i class="fa-solid fa-heart heart" aria-label="likes"></i>`;
       this.insertMedia(element, photographer);
-    });
+    }
+
     let filteredMedia = [...allMedia];
     select.addEventListener("change", async () => {
       const selectedOption = select.options[select.selectedIndex];
@@ -63,7 +63,7 @@ export class getOnePhotographer {
 
     this.insertHeaderPhotographer(photographer);
   }
-  async insertHeaderPhotographer(photographer) {
+  insertHeaderPhotographer(photographer) {
     const photographHeader = document.getElementById("photograph-header");
     const h2Name = document.getElementById("h2Name");
     const { name, portrait, city, country, tagline, price, id } = photographer;
@@ -94,10 +94,10 @@ export class getOnePhotographer {
 
     if (image?.endsWith(".jpg")) {
       picture = `assets/images/${result}/${image}`;
-      mediaHtml = `<img src="${picture}" alt="${title}" tabIndex="0"/>`;
+      mediaHtml = `<img data-lightbox src="${picture}" alt="${title}" tabIndex="0"/>`;
     } else if (video?.endsWith(".mp4")) {
       picture = `assets/images/${result}/${video}`;
-      mediaHtml = `<video src="${picture}" tabIndex="0"></video>`;
+      mediaHtml = `<video data-lightbox src="${picture}" tabIndex="0"></video>`;
     }
     section.innerHTML = `
     <div class="card" id="card">
