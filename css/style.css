@@ -154,3 +154,17 @@ video {
   font-size: 24px;
   color: #000;
 }
+.select-header {
+  margin: 0 100px;
+}
+.select-header select {
+  background-color: #901c1c;
+  color: white;
+  border-radius: 10px;
+  height: 50px;
+  width: 170px;
+}
+.select-header select option {
+  width: 170px;
+  border: 2px solid white;
+}
