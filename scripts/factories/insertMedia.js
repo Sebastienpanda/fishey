@@ -66,7 +66,8 @@ export class InsertMedia {
   insertHeaderPhotographer(photographer) {
     const photographHeader = document.getElementById("photograph-header");
     const h2Name = document.getElementById("h2Name");
-    const { name, portrait, city, country, tagline, price, id } = photographer;
+    const { name, portrait, city, country, tagline, price } = photographer;
+
     h2Name.innerText = `Contactez-moi ${name}`;
     spanPrice.innerText = `${price}€ / jour`;
     const picture = `assets/photographers/${portrait}`;
@@ -77,16 +78,14 @@ export class InsertMedia {
        <p aria-label="${tagline}">${tagline}</p>
       </div>
       <div> 
-         <button aria-label="Contact me" class="contact_button" onClick="displayModal()">Contactez-moi</button>
+         <button aria-label="Contact me" class="contact_button" onClick="displayModal()" aria-label="Bouton d'ouverture du modal de contact">Contactez-moi</button>
       </div>
       <img src="${picture}" alt="${name}" aria-label="${name}">
       `;
   }
   async insertMedia(media, photographer) {
-    const main = document.getElementById("containerCard");
-    const section = document.createElement("section");
-    section.id = "section";
-    main.append(section);
+    const section = document.getElementById("containerCard");
+    const card = document.createElement("div");
     let { title, image, id, likes, video } = media;
     const regexName = /^\w+/;
     const result = await photographer.name.match(regexName)[0];
@@ -94,13 +93,13 @@ export class InsertMedia {
 
     if (image?.endsWith(".jpg")) {
       picture = `assets/images/${result}/${image}`;
-      mediaHtml = `<img data-lightbox src="${picture}" alt="${title}" tabIndex="0"/>`;
+      mediaHtml = `<img data-lightbox=${title} src="${picture}" alt="${title}" tabIndex="0" />`;
     } else if (video?.endsWith(".mp4")) {
       picture = `assets/images/${result}/${video}`;
-      mediaHtml = `<video data-lightbox src="${picture}" tabIndex="0"></video>`;
+      mediaHtml = `<video data-lightbox=${title} src="${picture}" tabIndex="0"></video>`;
     }
-    section.innerHTML = `
-    <div class="card" id="card">
+    card.innerHTML = `
+    <div class="card" id="card" >
       ${mediaHtml}
       <div class="containerInfo" >
         <h2>${title}</h2>
@@ -111,6 +110,7 @@ export class InsertMedia {
       </div>
     </div>
   `;
+    section.append(card);
     const heartId = document.getElementById(`heart-${id}`);
     const likeClass = document.getElementById(`like-${id}`);
     heartId.addEventListener("click", () => {
